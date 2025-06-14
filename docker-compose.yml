@@ -1,0 +1,21 @@
+version: '3.8'
+
+services:
+  app:
+    build: .                # Build the image from the Dockerfile in the current directory
+    ports:
+      - "3000:3000"         # Map host port 3000 to container port 3000
+    env_file:
+      - .env                # Load environment variables from .env file
+    depends_on:
+      - mongo               # Wait for the mongo service to be ready before starting
+
+  mongo:
+    image: mongo:6
+    ports:
+      - "27018:27017"       # Map host port 27018 to container port 27017
+    volumes:
+      - mongo-data:/data/db
+
+volumes:
+  mongo-data:                # Define the named volume for MongoDB data
